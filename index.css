@@ -1,0 +1,15 @@
+.select-type-conta{
+    padding: 10px;
+    color: black;
+}
+input{
+    padding: 10px;
+    font-size: 13px;
+}
+#areadevisualizacao{
+    width: 300px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

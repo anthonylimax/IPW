@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="text-name">
+    
+    <select id="selector" class="select-type-conta">
+        <option value="Poupança">Poupança</option>
+        <option value="Corrente">Corrente</option>
+        <option value="Universitário">Universitário</option>
+    </select>
+    <input onclick="AddNewAccount()" type="button" value="CRIAR CONTA">
+    <div>
+        <h2>Alterando valores na Conta</h2>
+        <select id="contas">
+        </select>
+        <input type="number" name="" id="saque-value">
+        <select id="select-saque-deposito">
+            <option value="saque">SAQUE</option>
+            <option value="deposito">DEPOSITO</option>
+        </select>
+        <input type="button" value="EFETUAR SAQUE" onclick="choose()">
+    </div>
+    <div>
+        <label>visualizar todas as contas:</label>
+        <input type="button" value="visualizar" onclick="visualizar()">
+    </div>
+    <div id="areadevisualizacao">
+
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
