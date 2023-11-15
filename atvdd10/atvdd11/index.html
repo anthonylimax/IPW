@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Contas Bancárias</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .left-panel {
+            width: 45%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .right-panel {
+            width: 45%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .navbar {
+            background-color: #ff9000;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+          
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Gerenciar Contas Bancárias</h1>
+    </div>
+    <div class="container">
+        <div class="left-panel">
+            <label for="agencia">Agência:</label>
+            <input type="text" id="agencia"><br><br>
+
+            <label for="tipo">Tipo de Conta:</label>
+            <select id="tipo">
+                <option value="Conta Corrente">Conta Corrente</option>
+                <option value="Conta Poupança">Conta Poupança</option>
+                <option value="Conta Universitária">Conta Universitária</option>
+            </select><br><br>
+
+            <label for="numeroCartao">Número do Cartão:</label>
+            <input type="text" id="numeroCartao"><br><br>
+
+            <label for="valorOperacao">Valor da Operação:</label>
+            <input type="text" id="valorOperacao"><br><br>
+
+            <button onclick="sacar()">Sacar</button>
+            <button onclick="depositar()">Depositar</button>
+        </div>
+        <div class="right-panel">
+            <h2>Movimentações</h2>
+            <ul id="movimentacoes"></ul>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="pieChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const movimentacoesList = document.getElementById("movimentacoes");
+        const saldo = 0; // Saldo inicial
+
+        function sacar() {
+            const agencia = document.getElementById("agencia").value;
+            const tipoConta = document.getElementById("tipo").value;
+            const numeroCartao = document.getElementById("numeroCartao").value;
+            const valorOperacao = parseFloat(document.getElementById("valorOperacao").value);
+
+            if (isNaN(valorOperacao) || valorOperacao <= 0) {
+                alert("Valor de saque inválido.");
+                return;
+            }
+
+            // Simulando uma transação de saque
+            const movimentacao = `Saque - Agência: ${agencia}, Tipo de Conta: ${tipoConta}, Número do Cartão: ${numeroCartao}, Valor: R$ ${valorOperacao}`;
+            adicionarMovimentacao(movimentacao);
+        }
+
+        function depositar() {
+            const agencia = document.getElementById("agencia").value;
+            const tipoConta = document.getElementById("tipo").value;
+            const numeroCartao = document.getElementById("numeroCartao").value;
+            const valorOperacao = parseFloat(document.getElementById("valorOperacao").value);
+
+            if (isNaN(valorOperacao) || valorOperacao <= 0) {
+                alert("Valor de depósito inválido.");
+                return;
+            }
+
+            // Simulando uma transação de depósito
+            const movimentacao = `Depósito - Agência: ${agencia}, Tipo de Conta: ${tipoConta}, Número do Cartão: ${numeroCartao}, Valor: R$ ${valorOperacao}`;
+            adicionarMovimentacao(movimentacao);
+        }
+
+        function adicionarMovimentacao(movimentacao) {
+            const listItem = document.createElement("li");
+            listItem.textContent = movimentacao;
+            movimentacoesList.appendChild(listItem);
+        }
+
+        // Código para criar gráficos
+        const barChartCanvas = document.getElementById("barChart");
+        const pieChartCanvas = document.getElementById("pieChart");
+        const lineChartCanvas = document.getElementById("lineChart");
+
+        const barData = {
+            labels: ["Depósitos", "Saquxs"],
+            datasets: [
+                {
+                    label: "Movimentações",
+                    data: [5, 3],
+                    backgroundColor: ["rgba(90, 192, 70, 1)", "rgba(80, 20, 44, 0.2)"],
+                    borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        const pieData = {
+            labels: ["Depósitos", "Saques"],
+            datasets: [
+                {
+                    data: [5, 3],
+                    backgroundColor: ["rgba(90, 192, 70, 1)", "rgba(80, 20, 44, 0.2)"]
+                }
+            ]
+        };
+
+        const lineData = {
+            labels: ["1", "2", "3", "4", "5"],
+            datasets: [
+                {
+                    label: "Saldo",
+                    data: [100, 95, 90, 88, 85],
+                    borderColor: "rgba(90, 192, 70, 1)",
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        new Chart(barChartCanvas, {
+            type: "bar",
+            data: barData
+        });
+
+        new Chart(pieChartCanvas, {
+            type: "pie",
+            data: pieData
+        });
+
+        new Chart(lineChartCanvas, {
+            type: "line",
+            data: lineData
+        });
+    </script>
+</body>
+</html>
